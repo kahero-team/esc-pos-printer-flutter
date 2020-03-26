@@ -33,4 +33,10 @@ class Escposprinter {
     final bool returned = await _channel.invokeMethod('printRawData', params);
     return returned;
   }
+
+  static Future<bool> printBytes(List<int> bytes) async {
+    Map<String, dynamic> params = {"bytes": bytes};
+    final bool returned = await _channel.invokeMethod('printBytes', params);
+    return returned;
+  }
 }

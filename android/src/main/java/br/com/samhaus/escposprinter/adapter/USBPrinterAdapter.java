@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
 
 public class USBPrinterAdapter {
     private static USBPrinterAdapter mInstance;
@@ -201,4 +202,32 @@ public class USBPrinterAdapter {
         }
     }
 
+    public boolean printBytes(ArrayList<Integer> bytes) {
+        Log.v(LOG_TAG, "start to print text");
+        boolean isConnected = openConnection();
+        if (isConnected) {
+            Log.v(LOG_TAG, "Connected to device");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Vector<Byte> vectorData = new Vector<>();
+                    for (int i = 0; i < bytes.size(); ++i) {
+                        Integer val = bytes.get(i);
+                        vectorData.add(Byte.valueOf(Integer.toString(val > 127 ? val - 256 : val)));
+                    }
+                    Object[] temp = vectorData.toArray();
+                    byte[] bytedata = new byte[temp.length];
+                    for (int i = 0; i < temp.length; i++) {
+                        bytedata[i] = (byte) temp[i];
+                    }
+                    int b = mUsbDeviceConnection.bulkTransfer(mEndPoint, bytedata, bytedata.length, 100000);
+                    Log.i(LOG_TAG, "Return Status: b-->"+b);
+                }
+            }).start();
+            return true;
+        } else {
+            Log.v(LOG_TAG, "failed to connected to device");
+            return false;
+        }
+    }
 }

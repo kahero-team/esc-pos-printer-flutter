@@ -41,8 +41,11 @@ public class EscposprinterPlugin implements MethodCallHandler {
       String text = call.argument("text");
       printText(text, result);
     } else if (call.method.equals("printRawData")) {
-      String raw = call.argument("raw");
-      printRawData(raw, result);
+        String raw = call.argument("raw");
+        printRawData(raw, result);
+    } else if (call.method.equals("printBytes")) {
+        ArrayList<Integer> bytes = call.argument("bytes");
+        printBytes(bytes, result);
     } else {
       result.notImplemented();
     }
@@ -88,5 +91,10 @@ public class EscposprinterPlugin implements MethodCallHandler {
     public void printRawData(String base64Data, Result result) {
         adapter.printRawData(base64Data);
         result.success(true);
+    }
+
+    public void printBytes(ArrayList<Integer> bytes, Result result) {
+      adapter.printBytes(bytes);
+      result.success(true);
     }
 }
