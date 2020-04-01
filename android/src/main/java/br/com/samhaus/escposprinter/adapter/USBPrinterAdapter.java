@@ -203,6 +203,7 @@ public class USBPrinterAdapter {
     }
 
     public boolean printBytes(ArrayList<Integer> bytes) {
+        final ArrayList<Integer> bytesArray = bytes;
         Log.v(LOG_TAG, "start to print text");
         boolean isConnected = openConnection();
         if (isConnected) {
@@ -211,8 +212,8 @@ public class USBPrinterAdapter {
                 @Override
                 public void run() {
                     Vector<Byte> vectorData = new Vector<>();
-                    for (int i = 0; i < bytes.size(); ++i) {
-                        Integer val = bytes.get(i);
+                    for (int i = 0; i < bytesArray.size(); ++i) {
+                        Integer val = bytesArray.get(i);
                         vectorData.add(Byte.valueOf(Integer.toString(val > 127 ? val - 256 : val)));
                     }
                     Object[] temp = vectorData.toArray();
