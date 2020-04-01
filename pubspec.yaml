@@ -1,8 +1,6 @@
 name: escposprinter
-description: A new flutter plugin project.
-version: 0.0.1
-author: Marcus Felix <marcus@samhaus.com>
-homepage: https://samhaus.com
+description: ESC/POS USB Printer for Flutter
+version: 0.0.2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
